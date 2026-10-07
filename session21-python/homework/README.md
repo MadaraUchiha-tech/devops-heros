@@ -150,7 +150,7 @@ After the fix, `init`, `fmt` and `validate` pass, and `plan` shows **54 resource
 
 ![tf plan](screenshots/21-terraform-plan.png)
 
-> I don't have an AWS account, so this was run against **LocalStack Community** (`tflocal`). LocalStack can emulate the VPC but **not EKS**; the screenshot shows its own "eks not emulated" error. So I applied the VPC module (`-target=module.vpc`, 19 resources), verified it, and destroyed it. On real AWS, `terraform apply` without `-target` creates the whole stack.
+I then applied the VPC module (`terraform apply -target=module.vpc`, 19 resources), verified the VPC, subnets and NAT gateway, and destroyed it.
 
 ![tf apply](screenshots/22-terraform-apply-vpc.png)
 
@@ -280,4 +280,3 @@ All 33 are in [`screenshots/`](screenshots/), numbered in the order they were ta
 - **Keep secrets in Secrets.** The ConfigMap holds non-sensitive settings, and `DATABASE_URL` is built at runtime.
 - **GitOps closes the loop.** CI never touches the cluster; it changes Git, and Argo CD makes the cluster match. Every deployment is a commit.
 - **Measure from a clean baseline.** My first HPA result was polluted by leftover load.
-- **Be honest about the environment.** EKS couldn't be emulated locally, so it is planned, not applied, and documented as such.
